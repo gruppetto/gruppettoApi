@@ -8,7 +8,9 @@ var routes = require('./routes/index');
 var upload = require('./routes/upload');
 var users = require('./routes/users');
 var login = require('./routes/login');
+var groups = require('./routes/groups');
 var busboy = require('connect-busboy');
+var mongoose = require('mongoose');
 
 var app = express();
 
@@ -22,6 +24,8 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, Authorization");
   next();
 });
+
+mongoose.connect('mongodb://gruppetto:gruppetto@ds021333.mlab.com:21333/gruppetto');
 
 
 // uncomment after placing your favicon in /public
@@ -38,6 +42,7 @@ app.use('/', routes);
 app.use('/upload', upload);
 app.use('/users', users);
 app.use('/login', login);
+app.use('/groups', groups);
 
 
 // catch 404 and forward to error handler

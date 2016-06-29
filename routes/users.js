@@ -1,10 +1,9 @@
 var express = require('express');
 var User = require('../models/user');
-var mongoose = require('mongoose');
+var Group = require('../models/group');
 
 var router = express.Router();
 
-mongoose.connect('mongodb://gruppetto:gruppetto@ds021333.mlab.com:21333/gruppetto');
 
 
 router.get('/', function (req, res) {
@@ -54,6 +53,45 @@ router.post('/', function (req, res) {
     );
     res.status(200).end();
   });
+});
+
+router.post('/:id/groups', function (req, res) {
+
+  User.findById(req.params.id, function (err, user) {
+    if (err){
+      console.log(err);
+      res.json(
+        {
+          message: 'User not found'
+        }
+      );
+      res.status(404).end();
+    }
+
+    console.log(user);
+
+    var group = new Group();
+    group.name = req.body.name;
+    group.admin = [user._id];
+    group.members = [user._id];
+
+    console.log(group);
+
+    group.save(function (err) {
+      if (err){
+        console.log(err);
+        res.send(err);
+      }
+
+      res.json(
+        {
+          message: 'Group created'
+        }
+      );
+      res.status(200).end();
+    });
+  });
+
 });
 
 module.exports = router;

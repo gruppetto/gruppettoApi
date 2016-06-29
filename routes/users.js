@@ -94,4 +94,27 @@ router.post('/:id/groups', function (req, res) {
 
 });
 
+router.get('/:id/groups', function(req, res) {
+
+  User.findById(req.params.id, function(err, user) {
+    if(err) {
+      console.log(err);
+      res.json({
+        message: 'User not found'
+      });
+      res.status(404).end();
+    }
+
+    Group
+      .find({
+        members : user._id
+      })
+      .exec(function(err, groups) {
+
+        res.json(groups);
+    });
+
+  })
+});
+
 module.exports = router;

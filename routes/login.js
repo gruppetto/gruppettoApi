@@ -19,7 +19,7 @@ router.post('/', function (req, res) {
       console.log('no user found');
 
       var newUser = new User();      // create a new instance of the User model
-      newUser.name = req.body.userName;
+      newUser.name = req.body.name;
       newUser.fbId = req.body.fbId;
       newUser.pictureUrl = req.body.pictureUrl;
       newUser.email = req.body.email;
@@ -42,7 +42,7 @@ router.post('/', function (req, res) {
     else {
       var foundUser = user[0];
 
-      foundUser.name = req.body.userName;
+      foundUser.name = req.body.name;
       foundUser.pictureUrl = req.body.pictureUrl;
 
       console.log(user);

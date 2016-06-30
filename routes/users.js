@@ -1,14 +1,14 @@
 var express = require('express');
 var User = require('../models/user');
 var Group = require('../models/group');
+var mongoose = require('mongoose');
 
 var router = express.Router();
 
 
-
 router.get('/', function (req, res) {
   User.find(function (err, users) {
-    if (err){
+    if (err) {
       console.log(err);
       res.send(err);
     }
@@ -19,7 +19,7 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
   User.findById(req.params.id, function (err, user) {
-    if (err){
+    if (err) {
       console.log(err);
       res.json(
         {
@@ -41,7 +41,7 @@ router.post('/', function (req, res) {
 
   // save the bear and check for errors
   user.save(function (err) {
-    if (err){
+    if (err) {
       console.log(err);
       res.send(err);
     }
@@ -58,7 +58,7 @@ router.post('/', function (req, res) {
 router.post('/:id/groups', function (req, res) {
 
   User.findById(req.params.id, function (err, user) {
-    if (err){
+    if (err) {
       console.log(err);
       res.json(
         {
@@ -78,7 +78,7 @@ router.post('/:id/groups', function (req, res) {
     console.log(group);
 
     group.save(function (err) {
-      if (err){
+      if (err) {
         console.log(err);
         res.send(err);
       }
@@ -94,10 +94,10 @@ router.post('/:id/groups', function (req, res) {
 
 });
 
-router.get('/:id/groups', function(req, res) {
+router.get('/:id/groups', function (req, res) {
 
-  User.findById(req.params.id, function(err, user) {
-    if(err) {
+  User.findById(req.params.id, function (err, user) {
+    if (err) {
       console.log(err);
       res.json({
         message: 'User not found'
@@ -107,12 +107,13 @@ router.get('/:id/groups', function(req, res) {
 
     Group
       .find({
-        members : user._id
+        members: mongoose.Types.ObjectId(user._id)
       })
-      .exec(function(err, groups) {
+      .populate(['admin', 'members'])
+      .exec(function (err, groups) {
 
         res.json(groups);
-    });
+      });
 
   })
 });

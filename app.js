@@ -1,19 +1,32 @@
 var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var logger = require('morgan');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var config = require('./config/database');
+var jwt = require('jwt-simple');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var upload = require('./routes/upload');
 var users = require('./routes/users');
+var signup = require('./routes/signup');
+var authenticate = require('./routes/authenticate');
+var memberinfo = require('./routes/memberinfo');
 var login = require('./routes/login');
 var groups = require('./routes/groups');
 var busboy = require('connect-busboy');
-var mongoose = require('mongoose');
 
-var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
+
+app.use(logger('dev'));
+
+// Use the passport package in our application
+app.use(passport.initialize());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,20 +38,24 @@ app.use(function(req, res, next) {
   next();
 });
 
-mongoose.connect('mongodb://gruppetto:gruppetto@ds021333.mlab.com:21333/gruppetto');
+mongoose.connect(config.database);
+
+// pass passport for configuration
+require('./config/passport')(passport);
 
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(cookieParser());
 app.use(busboy());
 app.use('/images', express.static(__dirname + '/public/uploads'));
 app.use(express.static(__dirname + '/public'));
 
 app.use('/', routes);
+app.use('/signup', signup);
+app.use('/authenticate', authenticate);
+app.use('/memberinfo', memberinfo);
 app.use('/upload', upload);
 app.use('/users', users);
 app.use('/login', login);

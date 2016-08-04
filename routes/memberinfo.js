@@ -15,7 +15,7 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
   if (token) {
     var decoded = jwt.decode(token, config.secret);
     User.findOne({
-      name: decoded.name
+      email: decoded.email
     }, function(err, user) {
       if (err) throw err;
 

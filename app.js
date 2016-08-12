@@ -15,7 +15,6 @@ var users = require('./routes/users');
 var signup = require('./routes/signup');
 var authenticate = require('./routes/authenticate');
 var memberinfo = require('./routes/memberinfo');
-var login = require('./routes/login');
 var groups = require('./routes/groups');
 var busboy = require('connect-busboy');
 
@@ -58,7 +57,6 @@ app.use('/authenticate', authenticate);
 app.use('/memberinfo', memberinfo);
 app.use('/upload', upload);
 app.use('/users', users);
-app.use('/login', login);
 app.use('/groups', groups);
 
 

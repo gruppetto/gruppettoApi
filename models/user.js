@@ -18,6 +18,13 @@ var UserSchema   = new Schema({
     type: String,
     required: true
   },
+  sports: [
+    {
+      name: String,
+      level: Number,
+      frequency: String
+    }
+  ],
   pictureUrl: String
 });
 

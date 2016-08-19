@@ -77,9 +77,8 @@ router.delete('/:id/members/:memberId', function (req, res) {
         );
       }
 
-      group.members = group.members.filter(function (memberId) {
-        return memberId !== user._id;
-      });
+      group.members.remove(user._id);
+      group.admin.remove(user._id);
 
       group.save(function (err) {
         if (err)

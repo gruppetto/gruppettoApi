@@ -202,6 +202,11 @@ router.post('/:id/members', passport.authenticate('jwt', {session: false}), func
 
             group.members.push(user._id);
 
+            // if no admins on the group when joining, then the new member is the new admin
+            if(group.admin.length === 0) {
+              group.admin.push(user._id);
+            }
+
             group.save(function (err) {
               if (err)
                 res.send(err);

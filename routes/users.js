@@ -154,10 +154,10 @@ router.put('/:id', function (req, res) {
     if (err)
       res.send(err);
 
-    user.name = req.body.name;
-    user.email = req.body.email;
-    user.password = req.body.password;
-    user.sports = req.body.sports;
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.password = req.body.password || user.password;
+    user.sports = req.body.sports || user.sports;
 
     user.save(function (err) {
       if (err)

@@ -157,6 +157,7 @@ router.put('/:id', function (req, res) {
     user.name = req.body.name;
     user.email = req.body.email;
     user.password = req.body.password;
+    user.sports = req.body.sports;
 
     user.save(function (err) {
       if (err)
